@@ -1,8 +1,7 @@
 package com.project.server.serverApp;
 
 
-import com.project.server.serverApp.config.SecurityConfig;
-import com.project.server.serverApp.config.WebConfig;
+import com.project.server.serverApp.config.*;
 import com.project.server.serverApp.config.persistence.SystemPersistenceConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -12,7 +11,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{SystemPersistenceConfig.class, SecurityConfig.class};
+        return new Class[]{SystemPersistenceConfig.class, SecurityConfig.class, AuthorizationServerConfig.class, ResourceServerConfig.class, MethodSecurityConfig.class};
 
     }
 

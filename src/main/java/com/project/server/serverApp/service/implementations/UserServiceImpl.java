@@ -13,8 +13,9 @@ import com.project.server.serverApp.util.exceptions.UserIdNotFoundException;
 import org.hibernate.envers.AuditReaderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ import java.util.UUID;
 @Service("userService")
 @Repository
 @Transactional("systemTransactionManager")
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements  UserService {
 
     private UserRepository userRepository;
 
@@ -59,19 +60,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.save(s);
     }
 
-//    @Transactional
-//    @Override
-//    public Optional<User> update(User s) {
-//        Optional<User> byId = userRepository.findById(s.getId());
-//        byId.ifPresent(u -> {
-//            u.setLocked(s.isLocked());
-//            u.setExpired(s.isExpired());
-//            u.setMatchingPassword(u.getPassword());
-//
-//        });
-//        return byId;
-//
-//    }
+    @Transactional
+    @Override
+    public Optional<User> update(User s) {
+        Optional<User> byId = userRepository.findById(s.getId());
+        byId.ifPresent(u -> {
+            u.setLocked(s.isLocked());
+            u.setExpired(s.isExpired());
+            u.setMatchingPassword(u.getPassword());
+            u.setLogin(s.getLogin());
+            u.setFirstName(s.getFirstName());
+            u.setLastName(s.getLastName());
+        });
+        return byId;
+
+    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -163,4 +167,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public boolean isLoginExist(String login) {
         return userRepository.findByLoginEquals(login).isPresent();
     }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+//        long currentId = Long.parseLong(clientId);
+//        User registration_exception = userRepository.findById(currentId).orElseThrow(() -> new ClientRegistrationException("Registration exception"));
+//
+//    }
 }

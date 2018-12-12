@@ -5,11 +5,12 @@ import com.project.server.serverApp.entity.system.User;
 import com.project.server.serverApp.entity.system.VerificationToken;
 import com.project.server.serverApp.util.exceptions.EmailExistsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import java.util.Optional;
 
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
 
     <S extends User> S save(S s);
@@ -40,6 +41,6 @@ public interface UserService {
 
     Optional<VerificationToken> reissueVerificationToken(String token);
 
-//    Optional<User> update(User s);
+    Optional<User> update(User s);
 
 }
