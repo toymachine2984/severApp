@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+//@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+
+$mat-orange: (500:#F75857);
+@import "~@angular/material/theming";
+$fa-font-path: "../node_modules/@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/v4-shims";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+@include mat-core();
+
+
+$main-theme-primary: mat-palette($mat-orange);
+$main-theme-accent: mat-palette($mat-brown, 200, 100, 300);
+$main-theme-warn: mat-palette($mat-deep-purple, 300, 100, 600);
+
+
+$main-theme: mat-light-theme(
+    $main-theme-primary,
+    $main-theme-accent,
+    $main-theme-warn
+);
+
+@include angular-material-theme($main-theme);
+
+@font-face {
+  font-family: GotthardRegular;
+  src: url("app/resources/12291.otf") format("opentype");
+}
+
+.white-frame {
+  border: 1px solid rgba(0, 0, 0, .03);
+  box-shadow: 0 6px 6px -3px rgba(0,0,0,.2), 0 10px 14px 1px rgba(0,0,0,.14), 0 4px 18px 3px rgba(0,0,0,.12);
+}
+
+.font-f-home * {
+  font-family: "GotthardRegular", sans-serif;
+  color: white;
+  font-weight: 700;
+}

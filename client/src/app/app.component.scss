@@ -1,0 +1,15 @@
+/* AppComponent's private CSS styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-right: 3%;
+  margin-left: 3%;
+  margin-top: 1%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.container * {
+  //margin-bottom: 10%;
+}

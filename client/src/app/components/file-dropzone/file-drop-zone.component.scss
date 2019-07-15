@@ -1,0 +1,26 @@
+.file-zone {
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.file-zone-over {
+  transition: all .7s;
+  -ms-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  -o-transform: scale(1.05);
+  transform: scale(1.05);
+  border: 2px solid #FF9800;
+  }
+
+.file-zone:hover {
+  border-color: black;
+  border-width: 2px;
+  cursor: pointer;
+}
+
+
+.pr-1 {
+  padding-right: 1em;
+}

@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" class="gradient-main">
+  <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+    <div>
+      <button mat-icon-button color="accent">
+        <!--<mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>-->
+        <svg height="50" width="50">
+          <circle cx="25" cy="25" r="24" stroke="white" stroke-width="1" fill="none"/>
+        </svg>
+      </button>
+    </div>
+    <mat-nav-list fxLayout="row" fxLayoutAlign="space-between center" class="scaled font-f-home b-border">
+      <mat-list-item *ngIf="eventGuard.canActivate(null,null)">
+        <button mat-button color="primary" routerLink="/events">
+          События
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button color="primary" (click)="logout()">
+          Exit
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button color="primary" (click)="login()">
+          Login
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-toolbar-row>
+</mat-toolbar>
+

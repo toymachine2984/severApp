@@ -1,0 +1,23 @@
+
+.scaled mat-list-item button:hover, .scaled mat-list-item button:focus {
+  transition: all .5s;
+  -ms-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+  border-bottom: 3px solid white;
+}
+
+.b-border button {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0 0 0 0;
+}
+.polygon-head-main{
+  fill: url(#main-head-grad);
+  position: relative;
+}
+.gradient-main {
+  background: linear-gradient(to top right, #F4CE53, #F75857);
+}
+

@@ -1,0 +1,46 @@
+.width-f{
+  min-width: 100%;
+
+}
+
+.gradient-card-header {
+  background: linear-gradient(to top right, #F4CE53, #F75857);
+}
+
+.gradient-card-header-r {
+  background: linear-gradient(to bottom right, #F75857,#F4CE53);
+}
+
+.flex-icon{
+  display: flex;
+  align-items: center;
+}
+
+.mt-16{
+  margin-top: 16px;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.br-4 {
+  border-radius: 4px;
+}
+
+.p-4{
+  padding: 4px;
+}
+
+:root {
+  --ck-color-focus-border: red;
+}
+
+:host ::ng-deep .ck-editor__editable {
+  min-height: 200px;
+}
+

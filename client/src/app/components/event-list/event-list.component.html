@@ -1,0 +1,111 @@
+<div style="width: 80%;margin: 10px auto" class="mat-elevation-z8">
+  <mat-table mat-table [dataSource]="dataTable">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.name.first + row.name.last}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.email}}></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.phone}}></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+                 [length]="resultsLength"
+
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="onPaginateChange($event)">
+  </mat-paginator>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+  <div fxFlex="45">
+    <div class="mat-elevation-z8">
+      <mat-table mat-table [dataSource]="dataTable">
+
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef fxFlex="10">Главная</mat-header-cell>
+          <mat-cell *matCellDef="let row" fxFlex="10">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="position">
+          <mat-header-cell *matHeaderCellDef fxFlex="10">No.</mat-header-cell>
+          <mat-cell *matCellDef="let row; let i = index;" fxFlex="10">{{i + 1}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Наименование</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.file.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="size">
+          <mat-header-cell *matHeaderCellDef fxFlex="10">Размер</mat-header-cell>
+          <mat-cell *matCellDef="let row" fxFlex="10">{{row?.file?.size / 1024 / 1024 | number:'.2' }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="progress">
+          <mat-header-cell *matHeaderCellDef fxFlex="10">Прогресс</mat-header-cell>
+          <mat-cell *matCellDef="let row" class="pr-1" fxFlex="10">
+            <mat-progress-bar mode="determinate" [value]="row.progress"></mat-progress-bar>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef fxFlex="10">Статус</mat-header-cell>
+          <mat-cell *matCellDef="let row" fxFlex="10">
+            <mat-icon *ngIf="row.isSuccess" fontSet="fas" fontIcon="fa-check" inline color="primary"></mat-icon>
+            <mat-icon *ngIf="row.isCancel" fontSet="fas" fontIcon="fa-times" inline color="accent"></mat-icon>
+            <mat-icon *ngIf="row.isError" fontSet="fas" fontIcon="fa-exclamation-circle" inline color="warn"></mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef fxFlex="20">Действия</mat-header-cell>
+          <mat-cell *matCellDef="let row" fxFlex="20">
+            <mat-button-toggle-group appearance="legacy" #group="matButtonToggleGroup">
+              <mat-button-toggle (click)="row.upload()" [disabled]="row.isReady || row.isUploading || row.isSuccess">
+                <mat-icon fontSet="fas" fontIcon="fa-arrow-circle-up" inline color="primary"></mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle (click)="removeFile(row)">
+                <mat-icon fontSet="fas" fontIcon="fa-minus-circle" inline color="warn"></mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+    <div>
+
+      <div>
+        <div>
+          <span class="mat-tab-label">Прогресс очереди:</span>
+          <mat-progress-bar mode="determinate" [value]="uploader.progress"></mat-progress-bar>
+        </div>
+        <button mat-button color="primary" (click)="uploadAll()"
+                [disabled]="!uploader.getNotUploadedItems().length">Загрузить все
+        </button>
+        <button mat-button color="primary" (click)="cancelAll()" [disabled]="!uploader.queue.length">Отменить все
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

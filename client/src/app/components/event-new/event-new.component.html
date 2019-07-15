@@ -1,0 +1,245 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup" errorMessage="Заполните все поля">
+    <ng-template matStepLabel>Начальные данные</ng-template>
+    <form [formGroup]="firstFormGroup" fxLayout="column" fxLayoutAlign="space-around stretch"
+          (ngSubmit)="submitFirstStep()" fxFlex="100">
+      <div fxLayout="row" fxLayoutAlign="space-between stretch">
+        <div fxLayout="column" fxFlex="40">
+          <mat-form-field appearance="outline">
+            <mat-label>Заголовок</mat-label>
+            <input matInput placeholder="Ввведите значение" formControlName="title" required>
+          </mat-form-field>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field appearance="outline" fxFlex="45">
+              <mat-label>Дата начала</mat-label>
+              <input matInput [matDatepicker]="startDate" formControlName="startDate" placeholder="Выберите значение"
+                     required>
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+            <material-timepicker fxFlex="50" color="primary" label="Время" appearance="outline"
+                                 [userTime]="startTime" (change)="onChangeHour($event,true)"
+                                 required></material-timepicker>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field appearance="outline" fxFlex="45">
+              <mat-label>Дата завершения</mat-label>
+              <input matInput [matDatepicker]="endDate" formControlName="endDate" placeholder="Выберите значение">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+            <material-timepicker fxFlex="50" color="primary" label="Время" appearance="outline"
+                                 [userTime]="endTime" (change)="onChangeHour($event,false)"></material-timepicker>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Тип</mat-label>
+            <mat-select formControlName="type" required name="type" placeholder="Выберите значение">
+              <mat-option *ngFor="let type of types" [value]="type">
+                {{type.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="50">
+          <mat-card>
+            <div class="width-f gradient-card-header mb-0" mat-card-image>
+              <mat-card-header>
+                <mat-card-title fxLayout="row" fxLayoutAlign="start end" class="mt-16">
+                  <mat-icon mat-card-avatar fontSet="fas" fontIcon="fa-edit"></mat-icon>
+                  {{firstFormGroup.get('title').value}}</mat-card-title>
+                <mat-card-subtitle>{{firstFormGroup.get('type').value?.description}}</mat-card-subtitle>
+              </mat-card-header>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button color="primary" matStepperNext>
+          Далее
+          <mat-icon inline color="primary">navigate_next</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step [stepControl]="secondFormGroup" errorMessage="Заполните все поля">
+    <ng-template matStepLabel>Детали</ng-template>
+    <form [formGroup]="secondFormGroup" fxLayout="column" fxLayoutAlign="space-around stretch"
+          (ngSubmit)="submitSecondStep()" fxFlex="100">
+      <div fxlayout="row" fxLayoutAlign="space-between stretch">
+        <div fxLayout="column" fxFlex="50">
+          <mat-form-field appearance="outline" class="width-f">
+            <mat-label>Адресс</mat-label>
+            <input matInput placeholder="Ввведите значение" formControlName="address" required>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="width-f">
+            <mat-label>Лектор</mat-label>
+            <input matInput placeholder="Выберите значение" aria-label="лектор" [matAutocomplete]="auto"
+                   formControlName="lecture">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayValue">
+              <mat-option *ngFor="let lec of filteredLecture | async" [value]="lec">
+                <img aria-hidden [src]="lec.photoLink" height="25">
+                <span>{{lec.name}}</span> |
+                <small>Позиция: {{lec.position}}</small>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <ckeditor [editor]="CKEditor" [(ngModel)]="editorData" [config]="config"
+                    formControlName="description"></ckeditor>
+        </div>
+        <div fxLayout="column" fxFlex="45">
+          <mat-card>
+            <div class="width-f gradient-card-header mb-0" mat-card-image>
+              <mat-card-header>
+                <div mat-card-avatar style="background-size: cover;"
+                     [style.background]="'url(' + secondFormGroup.get('lecture').value?.photoLink + ')'">
+                </div>
+                <mat-card-title>{{secondFormGroup.get('lecture').value?.name}}</mat-card-title>
+                <mat-card-subtitle [innerHTML]="secondFormGroup.get('lecture').value?.position"></mat-card-subtitle>
+              </mat-card-header>
+            </div>
+            <mat-card-content>
+              <p [innerHTML]="editorData">
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="mt-4">
+        <app-file-dropzone (imagePathEvent)="receiveImagePath($event)"></app-file-dropzone>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button color="primary" matStepperPrevious>
+          <mat-icon inline color="primary">navigate_before</mat-icon>
+          Назад
+        </button>
+        <button mat-button color="primary" matStepperNext>
+          Далее
+          <mat-icon inline color="primary">navigate_next</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel>Дополнительно</ng-template>
+    <form fxLayout="column" fxLayoutAlign="space-around stretch"
+          [formGroup]="thirdFormGroup"
+          (ngSubmit)="submitThirdStep()" fxFlex="100">
+      <mat-form-field appearance="outline" class="width-f">
+        <mat-chip-list #tagsList>
+          <mat-chip
+            *ngFor="let tag of selectedTags"
+            [selectable]="true"
+            [removable]="true"
+            (removed)="removeTag(tag)">
+            {{tag.value}}
+            <mat-icon matChipRemove></mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Теги"
+            #tagsInput
+            formControlName="tags"
+            [matAutocomplete]="tagsAuto"
+            [matChipInputFor]="tagsList"
+            [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-list>
+        <mat-autocomplete (optionSelected)="selectedTag($event)" #tagsAuto="matAutocomplete">
+          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+            {{tag.value}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+
+      <div fxLayout="column">
+        <mat-card formArrayName="tariffs">
+          <div class="width-f gradient-card-header mb-0" mat-card-image>
+            <mat-card-header>
+              <mat-card-title fxLayout="row" fxLayoutAlign="start end" class="mt-16">
+                <mat-icon mat-card-avatar fontSet="fas" fontIcon="fa-edit"></mat-icon>
+                Тарифы
+              </mat-card-title>
+            </mat-card-header>
+          </div>
+          <mat-card-content class="mt-4">
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let tariff of thirdFormGroup.get('tariffs').controls;let i=index"
+                                   [expanded]="step === i"
+                                   (opened)="setOpened(i)" formGroupName="{{i}}">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{tariff.get('name').value || "Новый тариф"}}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{tariff.get('cost').value || "Стоимость"}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div fxLayout="column" fxLayoutAlign="space-between stretch">
+                  <mat-form-field>
+                    <mat-icon matPrefix inline fontSet="fas" fontIcon="fa-edit"></mat-icon>
+                    <input matInput placeholder="Наименование" formControlName="name">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Цена" type="number" formControlName="cost">
+                    <mat-icon matPrefix inline fontSet="fas" fontIcon="fa-tenge"></mat-icon>
+                    <span matSuffix>.00</span>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Скидка" type="number" formControlName="discount">
+                    <mat-icon matPrefix inline fontSet="fas" fontIcon="fa-percentage"></mat-icon>
+                    <span matSuffix>.00</span>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-icon matPrefix inline fontSet="fas" fontIcon="fa-calendar-alt"></mat-icon>
+                    <input matInput [matDatepicker]="tariffDate" placeholder="Дата" formControlName="endDate">
+                    <mat-datepicker-toggle matSuffix [for]="tariffDate"></mat-datepicker-toggle>
+                    <mat-datepicker #tariffDate></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <mat-action-row>
+                  <button mat-button color="primary" (click)="removeTariff(i)">
+                    <mat-icon color="primary" inline fontSet="fas" fontIcon="fa-times"></mat-icon>
+                  </button>
+                  <button mat-button color="primary" (click)="nextStep(i)">
+                    <mat-icon color="primary" inline fontSet="fas" fontIcon="fa-check"></mat-icon>
+                  </button>
+                </mat-action-row>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+            <button mat-button color="primary" (click)="addTariff()">Добавить
+              <mat-icon color="primary" inline>add</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button color="primary" matStepperPrevious>
+          <mat-icon inline color="primary">navigate_before</mat-icon>
+          Назад
+        </button>
+        <button mat-button color="primary" matStepperNext>Далее
+          <mat-icon inline color="primary">navigate_next</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Принять</ng-template>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus esse excepturi ipsum iure nihil obcaecati reiciendis. Cupiditate doloremque expedita possimus ratione vero. Accusantium adipisci asperiores ducimus explicabo laborum neque placeat.
+    <div>
+      <button mat-button color="primary" matStepperPrevious>
+        <mat-icon inline color="primary">navigate_before</mat-icon>
+        Назад
+      </button>
+
+      <button mat-button color="primary" (click)="createEvent()">Принять</button>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>
