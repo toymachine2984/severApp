@@ -46,7 +46,7 @@
 
     <properties>
         <spring.core.version>5.1.2.RELEASE</spring.core.version>
-        <spring.security.version>5.1.1.RELEASE</spring.security.version>
+        <spring.security.version>5.3.3.RELEASE</spring.security.version>
         <spring.security-jwt.version>1.0.9.RELEASE</spring.security-jwt.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
         <slf4j.verison>1.7.25</slf4j.verison>
