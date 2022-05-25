@@ -45,7 +45,7 @@
     </build>
 
     <properties>
-        <spring.core.version>5.1.2.RELEASE</spring.core.version>
+        <spring.core.version>5.2.22.RELEASE</spring.core.version>
         <spring.security.version>5.1.1.RELEASE</spring.security.version>
         <spring.security-jwt.version>1.0.9.RELEASE</spring.security-jwt.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
